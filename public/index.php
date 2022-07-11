@@ -15,4 +15,6 @@
 define( 'WP_USE_THEMES', true );
 
 /** Loads the WordPress Environment and Template */
-require __DIR__ . '/wp-blog-header.php';
+ $app = require __DIR__ . '/../resources/views/frontend/pages/index.blade.php';
+
+ $app->run();
