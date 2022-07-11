@@ -1,0 +1,258 @@
+body{
+    overflow-x: hidden;
+}
+.padding-left-right{
+    padding-left: 100px;
+    padding-right: 100px;
+}
+a.nav-link {
+    font-size: 12px;
+}
+.mt-5{
+    margin-top: 5rem!important;
+}
+h3.h3.mb-4.text-black {
+    font-weight: 600;
+}
+.filters .btn.active{
+    background: transparent !important;
+    color: #696563 !important;
+    border-color: #359d02 !important;
+}
+.filters .btn{
+    color: #696563 !important;
+    background: transparent !important;
+}
+.filters .btn:hover{
+    border-color: #359d02 !important;
+    transition: .3s all ease;
+}
+.item-testi{
+    width: 100%;
+    padding: 20px;
+    min-height: 540px;
+    background: #fff;
+    border-top: solid 15px #359d02;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px #eaeaea94;
+    text-align: center;
+    padding-bottom: 50px;
+}
+.item-menu{
+    width: 100%;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px #eaeaea94;
+    padding-left:50px; 
+    padding-right:50px; 
+}
+.item-testi h5{
+    color: #000 !important;
+    font-weight: 600;
+}
+.menu-info{
+    padding-top: 20px;
+}
+.menu-info h3{
+    color: #000 !important;
+    font-weight: 600;
+}
+.infos{
+    text-align: center;
+    font-size: 12px;
+}
+.infos img{
+    margin-bottom:10px; 
+}
+.menu-info p{
+    color: #359d02;
+    font-weight: 500;
+}
+.item-testi p{
+    text-align: left;
+}
+.photo-testi{
+    width: 150px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-radius: 100%;
+    height: 150px;
+    background-color: #000;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.owl-carousel .owl-stage-outer{
+    padding-bottom: 50px;
+    padding-top: 20px;
+}
+.hidden{
+    display: none;
+}
+.pbs{
+    background-position: top left;
+    padding: 20px;
+    background-repeat: no-repeat;
+}
+.pbs-1{
+    background-image: url('../ezfit/blob-shape-1.png');
+}
+.pbs-2{
+    background-image: url('../ezfit/blob-shape-2.png');
+}
+.pbs-3{
+    background-image: url('../ezfit/blob-shape-3.png');
+}
+.pbs-4{
+    background-image: url('../ezfit/blob-shape-4.png');
+}
+.pbs-5{
+    background-image: url('../ezfit/blob-shape-3.png');
+}
+.pbs-6{
+    background-image: url('../ezfit/blob-shape-2.png');
+}
+.pbs-7{
+    background-image: url('../ezfit/blob-shape-1.png');
+}
+.site-footer{
+    background-color: #efefef;
+}
+.footer-content{
+    text-align: center;
+}
+.footer-content h3{
+    color: #000;
+    font-weight: 700;
+    font-size: 22px;
+}
+.footer-content p{
+    margin-top: 30px;
+}
+.footer-content .img-apps{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.border-bottom{
+    border-bottom: 0px transparent !important;
+}
+p.no-margin{
+    margin-top: 10px;
+    font-size: 13px;
+}
+.sliders-apps{
+    position: relative;
+}
+.wrapper-apps {
+    background-image: url(../ezfit/img-frame-phone.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center right -5px;
+    width: 300px;
+    height: 575px;
+    position: absolute;
+    top: 85px;
+    right: 0;
+    left: 0;
+    margin: auto;
+    z-index: 2;
+}
+.sliders-apps .owl-carousel item{
+    margin-left: 100px;
+    margin-right: 100px;
+}
+.slider.feature-apps .item > img {
+    height: 500px;
+    width: auto;
+    margin-bottom: 30px;
+}
+.product-second-section{
+    position: relative;
+    min-height: auto;
+    padding: 25px 0 25px 0px;
+}
+.simple-slider {
+    margin-top:0px;
+    padding-bottom: 20px;
+}
+
+.simple-slider .slider {
+    margin-top: 70px;
+}
+
+.slider .item {
+    padding: 20px 50px;
+    outline: none !important;
+}
+
+.slider .item > img {
+    height: 75px;
+}
+.footer-text{
+    margin-top: 50px;
+}
+.footer-text h4{
+    font-size: 18px;
+    color: #000;
+    font-weight: 600;
+}
+.list-footer-link{
+    list-style: none;
+}
+.list-footer{
+    margin-top: 20px;
+}
+.link-footer{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.link-footer.footer-inline{
+    display: inline;
+}
+.link-footer.footer-inline {
+    font-size: 25px;
+    padding-right: 10px;
+}
+.site-footer a:hover {
+    color: #3ea31f;
+}
+.font-small{
+    font-size: 10px;
+}
+.border-radius{
+    width: 25px;
+    margin-right: 10px;
+    height: 10px;
+    border-radius: 5px 5px 0px 0px;
+    display: inline-block;
+}
+.border-color-all{
+    background-color: #359e00;
+    border-left: 13px solid #f2b100;
+}
+.border-color-hasil{
+    background-color: #359e00 !important;
+}
+.border-color-hasil-border{
+    border-color: #359e00 !important;;
+}
+.border-color-taste-border{
+    border-color: #f2b100 !important;;
+}
+.border-color-taste{
+    background-color: #f2b100 !important;
+}
+@media(max-width:1000px){
+    .padding-left-right{
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+}
+@media(max-width:500px){
+   .sliders-apps .owl-carousel .owl-item img{
+       margin-top: 30px;
+       padding-left: 50px;
+       padding-right: 50px;
+   }
+}

